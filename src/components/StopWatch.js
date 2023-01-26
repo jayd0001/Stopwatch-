@@ -6,6 +6,7 @@ import Box from "@material-ui/core/Box"
 import List from "@material-ui/core/List"
 import ListItem from "@material-ui/core/ListItem"
 import ListItemText from "@material-ui/core/ListItemText"
+import CustomButton from "./customButton"
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -100,21 +101,10 @@ const Stopwatch = () => {
         </Typography>
       </Box>
       <Box>
-        {isRunning ? (
-          <Button variant="contained" color="secondary" className={classes.button} onClick={pauseStopwatch}>
-            Pause
-          </Button>
-        ) : (
-          <Button variant="contained" color="primary" className={classes.button} onClick={startStopwatch}>
-            Start
-          </Button>
-        )}
-        <Button variant="contained" className={classes.button} onClick={resetStopwatch}>
-          Reset
-        </Button>
-        <Button variant="contained" color="primary" className={classes.button} onClick={saveTime}>
-          Save
-        </Button>
+        {isRunning ? <CustomButton variant="contained" color="secondary" className={classes.button} label="Pause" onClick={pauseStopwatch} disabled={!isRunning} /> : <CustomButton variant="contained" color="primary" className={classes.button} label="Start" onClick={startStopwatch} disabled={isRunning} />}
+        <CustomButton variant="contained" className={classes.button} label="Reset" onClick={resetStopwatch} disabled={!isRunning && time === 0} />
+
+        <CustomButton variant="contained" color="primary" className={classes.button} label="Save" onClick={saveTime} disabled={!isRunning} />
       </Box>
       <List className={classes.savedTimes}>
         {savedTimes.map((time, index) => (
