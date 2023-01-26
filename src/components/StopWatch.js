@@ -41,7 +41,7 @@ const Stopwatch = () => {
 
   useEffect(() => {
     return () => {
-      // Save the running  time state in local storage
+      // Save the running  time state in local storage and it also unmounts
       localStorage.setItem("runningTime", JSON.stringify(time))
     }
   }, [time])
