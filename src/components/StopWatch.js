@@ -24,27 +24,32 @@ const useStyles = makeStyles((theme) => ({
 
 const Stopwatch = () => {
   const classes = useStyles()
-  const [time, setTime] = useState({
-    hours: 0,
-    minutes: 0,
-    seconds: 0,
+  const [time, setTime] = useState(() => {
+    return (
+      JSON.parse(localStorage.getItem("runningTime")) || {
+        hours: 0,
+        minutes: 0,
+        seconds: 0,
+      }
+    )
   })
   const [intervalId, setIntervalId] = useState(null)
   const [isRunning, setIsRunning] = useState(false)
-  const [savedTimes, setSavedTimes] = useState([])
+  const [savedTimes, setSavedTimes] = useState(() => {
+    return JSON.parse(localStorage.getItem("savedTime")) || []
+  })
+
+  useEffect(() => {
+    return () => {
+      // Save the running  time state in local storage
+      localStorage.setItem("runningTime", JSON.stringify(time))
+    }
+  }, [time])
 
   useEffect(() => {
     // Save the current saved time state in local storage
     localStorage.setItem("savedTime", JSON.stringify(savedTimes))
   }, [savedTimes])
-
-  // Retrieve the saved time state from local storage on page refresh
-  useEffect(() => {
-    const savedTime = JSON.parse(localStorage.getItem("savedTime"))
-    if (savedTime) {
-      setSavedTimes(savedTime)
-    }
-  }, [])
 
   const startStopwatch = () => {
     if (!intervalId) {
